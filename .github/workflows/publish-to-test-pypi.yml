@@ -33,6 +33,7 @@ jobs:
         --wheel
         --outdir dist/
         .
+      run: echo "github.ref ${{ github.ref }}"
     - name: Publish distribution 📦 to Test PyPI
       continue-on-error: true
       uses: pypa/gh-action-pypi-publish@master
