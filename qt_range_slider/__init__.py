@@ -78,7 +78,6 @@ class QtRangeSlider(QWidget):
 	def __get_track_y_position(self, canvas_height):
 		return canvas_height // 2 - self.TRACK_HEIGHT // 2
 
-
 	def __draw_track(self, canvas_width, canvas_height, painter):
 		brush = QBrush()
 		brush.setColor(self.TRACK_COLOR)
