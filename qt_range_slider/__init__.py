@@ -9,14 +9,14 @@ from PyQt5.QtGui import QPainter, QBrush, QColor, QPalette
 
 @dataclass
 class Thumb:
-	"""Thumb class which holds information about a thumb
+	"""Thumb class which holds information about a thumb.
 	"""
 	value: int
 	rect: QRect
 	pressed: bool
 
 class QtRangeSlider(QWidget):
-	"""QtRangeSlider is a class which implements a slider with 2 thumbs
+	"""QtRangeSlider is a class which implements a slider with 2 thumbs.
 	"""
 	HEIGHT = 30
 	WIDTH = 120
