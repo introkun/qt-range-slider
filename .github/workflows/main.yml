@@ -36,7 +36,7 @@ jobs:
       env:
         QT_QPA_PLATFORM: offscreen
       run: |
-        invoke coverage --gui
+        invoke coverage
     - name: Lint
       run: |
         invoke lint
