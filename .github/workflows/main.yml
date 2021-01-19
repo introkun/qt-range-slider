@@ -27,6 +27,7 @@ jobs:
       uses: jurplel/install-qt-action@v2
       with:
         setup-python: 'false'
+        mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
     - name: Install python dependencies
       run: |
         pip3 install --upgrade pip
