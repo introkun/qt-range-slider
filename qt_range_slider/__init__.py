@@ -16,7 +16,22 @@ class Thumb:
 	pressed: bool
 
 class QtRangeSlider(QWidget):
-	"""QtRangeSlider is a class which implements a slider with 2 thumbs.
+	"""
+		QtRangeSlider is a class which implements a slider with 2 thumbs.
+
+		Methods
+
+			* __init__ (self, QWidget parent, left_value, right_value, left_thumb_value=0, right_thumb_value=None)
+			* set_left_thumb_value (self, int value):
+			* set_right_thumb_value (self, int value):
+			* (int) get_left_thumb_value (self):
+			* (int) get_right_thumb_value (self):
+
+		Signals
+
+			* left_thumb_value_changed (int)
+			* right_thumb_value_changed (int)
+
 	"""
 	HEIGHT = 30
 	WIDTH = 120
