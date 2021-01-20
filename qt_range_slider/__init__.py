@@ -65,6 +65,8 @@ class QtRangeSlider(QWidget):
 
 		self._canvas_width = None
 
+		self._ticks_count = 10
+
 		parent_palette = parent.palette()
 		self._background_color = parent_palette.color(QPalette.Window)
 		self._base_color = parent_palette.color(QPalette.Base)
@@ -196,3 +198,8 @@ class QtRangeSlider(QWidget):
 
 	def get_right_thumb_value(self):
 		return self._right_thumb.value
+
+	def set_ticks_count(self, count):
+		if count < 0:
+			raise ValueError("Invalid ticks count.")
+		self._ticks_count = count
