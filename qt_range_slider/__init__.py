@@ -52,6 +52,8 @@ class QtRangeSlider(QWidget):
 			QSizePolicy.MinimumExpanding,
 			QSizePolicy.MinimumExpanding
 		)
+		self.setMinimumWidth(self.WIDTH)
+		self.setMinimumHeight(self.HEIGHT)
 
 		self._left_value = left_value
 		self._right_value = right_value
