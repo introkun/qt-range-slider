@@ -28,3 +28,21 @@ class QtRangeSliderTest(unittest.TestCase):
 		slider = QtRangeSlider(QtRangeSliderTest._form, 0, 10, 3, 5)
 		unused_event = QPaintEvent(QRect(0, 0, 1, 1))
 		slider.paintEvent(unused_event)
+
+	def test_ticks(self):
+		slider = QtRangeSlider(QtRangeSliderTest._form, 0, 10, 3, 5)
+		slider.set_ticks_count(5)
+		# pylint: disable=protected-access
+		self.assertEqual(slider._ticks_count, 5)
+		unused_event = QPaintEvent(QRect(0, 0, 1, 1))
+		slider.paintEvent(unused_event)
+
+
+	def test_thumb_values(self):
+		slider = QtRangeSlider(QtRangeSliderTest._form, 0, 10)
+		slider.set_left_thumb_value(3)
+		# pylint: disable=protected-access
+		self.assertEqual(slider._left_thumb.value, 3)
+		slider.set_left_thumb_value(5)
+		# pylint: disable=protected-access
+		self.assertEqual(slider._left_thumb.value, 5)
