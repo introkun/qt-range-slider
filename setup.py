@@ -23,8 +23,10 @@ setuptools.setup(
 	license="MIT",
 	classifiers=[
 		"License :: OSI Approved :: MIT License",
+		'Operating System :: OS Independent',
 		"Programming Language :: Python",
 		"Programming Language :: Python :: 3",
+		"Development Status :: 3 - Alpha"
 	],
 	packages=setuptools.find_packages(),
 	include_package_data=True,
