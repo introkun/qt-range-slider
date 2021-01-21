@@ -120,6 +120,7 @@ class QtRangeSlider(QWidget):
 			x2 - x1, self.TRACK_HEIGHT)
 		painter.fillRect(rect, brush)
 
+	# pylint: disable=no-self-use
 	def __set_painter_pen_color(self, painter, pen_color):
 		pen = painter.pen()
 		pen.setColor(pen_color)
