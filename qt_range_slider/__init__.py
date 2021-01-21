@@ -41,6 +41,7 @@ class QtRangeSlider(QWidget):
 	TRACK_COLOR = QColor(0xc7, 0xc7, 0xc7)
 	TRACK_FILL_COLOR = QColor(0x01, 0x81, 0xff)
 	TRACK_PADDING = THUMB_WIDTH // 2 + 5
+	TICK_PADDING = 5
 
 	left_thumb_value_changed = pyqtSignal(int)
 	right_thumb_value_changed = pyqtSignal(int)
@@ -67,7 +68,7 @@ class QtRangeSlider(QWidget):
 
 		self._canvas_width = None
 
-		self._ticks_count = 10
+		self._ticks_count = 0
 
 		parent_palette = parent.palette()
 		self._background_color = parent_palette.color(QPalette.Window)
@@ -89,6 +90,7 @@ class QtRangeSlider(QWidget):
 
 		self.__draw_track(self._canvas_width, canvas_height, painter)
 		self.__draw_track_fill(self._canvas_width, canvas_height, painter)
+		self.__draw_ticks(self._canvas_width, canvas_height, painter, self._ticks_count)
 		self.__draw_left_thumb(self._canvas_width, canvas_height, painter)
 		self.__draw_right_thumb(self._canvas_width, canvas_height, painter)
 
@@ -118,14 +120,17 @@ class QtRangeSlider(QWidget):
 			x2 - x1, self.TRACK_HEIGHT)
 		painter.fillRect(rect, brush)
 
+	def __set_painter_pen_color(self, painter, pen_color):
+		pen = painter.pen()
+		pen.setColor(pen_color)
+		painter.setPen(pen)
+
 	def __draw_thumb(self, x, y, painter):
 		brush = QBrush()
 		brush.setColor(self._base_color)
 		brush.setStyle(Qt.SolidPattern)
 
-		pen = painter.pen()
-		pen.setColor(self._border_color)
-		painter.setPen(pen)
+		self.__set_painter_pen_color(painter, self._border_color)
 
 		painter.setBrush(brush)
 
@@ -205,3 +210,16 @@ class QtRangeSlider(QWidget):
 		if count < 0:
 			raise ValueError("Invalid ticks count.")
 		self._ticks_count = count
+
+	def __draw_ticks(self, canvas_width, canvas_height, painter, ticks_count):
+		if not self._ticks_count:
+			return
+
+		self.__set_painter_pen_color(painter, self._border_color)
+
+		tick_step = (canvas_width - 2 * self.TRACK_PADDING) // ticks_count
+		y1 = self.__get_track_y_position(canvas_height) - self.TICK_PADDING
+		y2 = y1 - self.THUMB_HEIGHT // 2
+		for x in range(0, ticks_count + 1):
+			x = x * tick_step + self.TRACK_PADDING
+			painter.drawLine(x, y1, x, y2)

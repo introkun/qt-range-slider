@@ -31,9 +31,11 @@ def _render_slider_with_labels(parent, layout, min_value = 0, max_value = 10, \
 	if not size_value:
 		slider.left_thumb_value_changed.connect(label_min.setNum)
 		slider.right_thumb_value_changed.connect(label_max.setNum)
-		return
+		return slider
+
 	slider.left_thumb_value_changed.connect(lambda x: label_min.setText(size(x)))
 	slider.right_thumb_value_changed.connect(lambda x: label_max.setText(size(x)))
+	return slider
 
 
 def main():
@@ -53,6 +55,10 @@ def main():
 	max_value = 10*1024*1024*1024
 	_render_slider_with_labels(main_window, layout, min_value, max_value, max_value // 3, \
 		max_value * 3 // 4, size_value=True)
+
+	slider = _render_slider_with_labels(main_window, layout, min_value, max_value, max_value // 3, \
+		max_value * 3 // 4, size_value=True)
+	slider.set_ticks_count(10)
 
 	main_window.show()
 
