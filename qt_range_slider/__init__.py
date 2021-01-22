@@ -116,8 +116,8 @@ class QtRangeSlider(QWidget):
 		available_width = canvas_width - 2 * self.TRACK_PADDING
 		x1 = self._left_thumb.value / self._right_value * available_width + self.TRACK_PADDING
 		x2 = self._right_thumb.value / self._right_value * available_width + self.TRACK_PADDING
-		rect = QRect(x1, self.__get_track_y_position(canvas_height), \
-			x2 - x1, self.TRACK_HEIGHT)
+		rect = QRect(round(x1), self.__get_track_y_position(canvas_height), \
+			round(x2) - round(x1), self.TRACK_HEIGHT)
 		painter.fillRect(rect, brush)
 
 	# pylint: disable=no-self-use
@@ -135,7 +135,7 @@ class QtRangeSlider(QWidget):
 
 		painter.setBrush(brush)
 
-		thumb_rect = QRect(x - self.THUMB_WIDTH // 2 + self.TRACK_PADDING, \
+		thumb_rect = QRect(round(x) - self.THUMB_WIDTH // 2 + self.TRACK_PADDING, \
 			y + self.TRACK_HEIGHT // 2 - self.THUMB_HEIGHT // 2, self.THUMB_WIDTH, self.THUMB_HEIGHT)
 		painter.drawEllipse(thumb_rect)
 		return thumb_rect
