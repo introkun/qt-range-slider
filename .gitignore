@@ -127,3 +127,9 @@ dmypy.json
 
 # VS Code settings
 .vscode/
+
+# MacOs tem file
+.DS_Store
+
+# config file to switch between conda environments
+environment.yml

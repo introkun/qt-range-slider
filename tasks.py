@@ -23,7 +23,7 @@ def test(c):
 
 @task
 def lint(c):
-	run_arg = "pylint -j 4 qt_range_slider/__init__.py example.py"
+	run_arg = "pylint -j 4 qt_range_slider/__init__.py example.py tests/"
 	if os.name == 'nt': # Windows
 		c.run(run_arg)
 	else:

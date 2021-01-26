@@ -5,4 +5,4 @@ coverage~=5.3
 coveralls~=2.2.0
 rope~=0.18.0
 Sphinx~=3.4.3
-hurry.filesize~=0.9
+hfilesize~=0.1.0
