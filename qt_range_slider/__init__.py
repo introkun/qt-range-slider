@@ -43,15 +43,15 @@ class QtRangeSlider(QWidget):
 	TRACK_PADDING = THUMB_WIDTH // 2 + 5
 	TICK_PADDING = 5
 
-	left_thumb_value_changed = pyqtSignal(int)
-	right_thumb_value_changed = pyqtSignal(int)
+	left_thumb_value_changed = pyqtSignal('unsigned long long')
+	right_thumb_value_changed = pyqtSignal('unsigned long long')
 
 	def __init__(self, parent, left_value, right_value, left_thumb_value=0, right_thumb_value=None):
 		super().__init__(parent)
 
 		self.setSizePolicy(
-			QSizePolicy.MinimumExpanding,
-			QSizePolicy.MinimumExpanding
+			QSizePolicy.Fixed,
+			QSizePolicy.Fixed
 		)
 		self.setMinimumWidth(self.WIDTH)
 		self.setMinimumHeight(self.HEIGHT)
@@ -76,11 +76,6 @@ class QtRangeSlider(QWidget):
 		self._base_color = parent_palette.color(QPalette.Base)
 		self._button_color = parent_palette.color(QPalette.Button)
 		self._border_color = parent_palette.color(QPalette.Mid)
-
-
-	def sizeHint(self):
-		print("sizeHint")
-		return QSize(self.HEIGHT, self.WIDTH)
 
 	def paintEvent(self, unused_e):
 		print("paintEvent")
@@ -163,6 +158,7 @@ class QtRangeSlider(QWidget):
 			# nothing to update
 			return
 		self._left_thumb.value = value
+		print(f"value before emit {value}")
 		self.left_thumb_value_changed.emit(value)
 		self.repaint()
 
@@ -173,6 +169,7 @@ class QtRangeSlider(QWidget):
 			# nothing to update
 			return
 		self._right_thumb.value = value
+		print(f"value before emit {value}")
 		self.right_thumb_value_changed.emit(value)
 		self.repaint()
 
@@ -194,7 +191,7 @@ class QtRangeSlider(QWidget):
 
 	# pylint: disable=no-self-use
 	def __get_thumb_value(self, x, canvas_width, right_value):
-		print(f"x {x} canvas_width {canvas_width} right_value {right_value}")
+		print(f"x {x} canvas_width {canvas_width} left_value {self._left_thumb.value} right_value {right_value}")
 		return round(x / canvas_width * right_value)
 
 	# override Qt event
@@ -203,11 +200,16 @@ class QtRangeSlider(QWidget):
 		if self._left_thumb.pressed:
 			new_val = self.__get_thumb_value(event.x(), self._canvas_width, self._right_value)
 			print(f"new_val {new_val}")
+			if new_val < 0:
+				print("negative new_val !!!!")
+				return
 			self.set_left_thumb_value(new_val)
 			return
 
 		if self._right_thumb.pressed:
 			new_val = self.__get_thumb_value(event.x(), self._canvas_width, self._right_value)
+			if new_val > self._right_value:
+				return
 			self.set_right_thumb_value(new_val)
 
 	def get_left_thumb_value(self):

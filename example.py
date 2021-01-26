@@ -2,6 +2,7 @@ import sys
 
 from hfilesize import FileSize
 
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout, QVBoxLayout, QLabel
 
 from qt_range_slider import QtRangeSlider
@@ -17,6 +18,7 @@ def _size(size):
 def _render_only_slider(layout, min_value = 0, max_value = 10):
 	inner_layout = QHBoxLayout()
 	slider = QtRangeSlider(layout.parent(), min_value, max_value)
+	slider.setMinimumWidth(500)
 	inner_layout.addWidget(slider)
 
 	layout.addLayout(inner_layout)
@@ -26,9 +28,14 @@ def _render_slider_with_labels(layout, min_value = 0, max_value = 10, \
 	inner_layout = QHBoxLayout()
 
 	label_min = QLabel(_size(left_thumb_value) if size_value else str(left_thumb_value))
+	label_min.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
+	label_min.setFixedWidth(70)
 	_right_thumb_value = right_thumb_value if right_thumb_value else max_value
 	label_max = QLabel(_size(_right_thumb_value) if size_value else str(_right_thumb_value))
+	label_max.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+	label_max.setFixedWidth(70)
 	slider = QtRangeSlider(layout.parent(), min_value, max_value, left_thumb_value, right_thumb_value)
+	slider.setMinimumWidth(500)
 	inner_layout.addWidget(label_min)
 	inner_layout.addWidget(slider)
 	inner_layout.addWidget(label_max)
@@ -65,6 +72,7 @@ def main():
 
 	slider = _render_slider_with_labels(layout, min_value, max_value, max_value // 3, \
 		max_value * 3 // 4, size_value=True)
+	slider.setMinimumWidth(500)
 	slider.set_ticks_count(10)
 
 	main_window.show()

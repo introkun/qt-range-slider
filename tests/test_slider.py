@@ -90,4 +90,3 @@ class QtRangeSliderTest(unittest.TestCase):
 
 		QTest.mouseRelease(slider, Qt.LeftButton)
 		self.assertEqual(slider.get_left_thumb_value(), 894784853)
-
