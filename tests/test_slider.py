@@ -1,12 +1,18 @@
 import sys
 import unittest
 
-from PyQt5.QtCore import Qt, QRect, QEvent
+from PyQt5.QtCore import Qt, QRect, QEvent, QSize, QPoint
 from PyQt5.QtTest import QTest
 from PyQt5.QtGui import QPaintEvent, QMouseEvent
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 
 from qt_range_slider import QtRangeSlider
+
+
+def _mouse_move(widget: QWidget, new_position: QPoint):
+	event = QMouseEvent(QEvent.MouseMove, new_position, \
+			Qt.LeftButton, Qt.NoButton, Qt.NoModifier)
+	QApplication.sendEvent(widget, event)
 
 
 class QtRangeSliderTest(unittest.TestCase):
@@ -16,8 +22,9 @@ class QtRangeSliderTest(unittest.TestCase):
 	def setUpClass(cls):
 		cls._app = QApplication(sys.argv)
 		cls._form = QMainWindow()
-		cls._form.setFixedWidth(500)
-		cls._form.setFixedHeight(100)
+		cls._initial_size = QSize(500, 100)
+		cls._form.setFixedWidth(cls._initial_size.width())
+		cls._form.setFixedHeight(cls._initial_size.height())
 
 	def test_init(self):
 		slider = QtRangeSlider(QtRangeSliderTest._form, 0, 10, 3, 5)
@@ -52,7 +59,7 @@ class QtRangeSliderTest(unittest.TestCase):
 		self.assertEqual(slider._left_thumb.value, 5)
 
 	def test_change_size_while_dragging(self):
-		slider = QtRangeSlider(QtRangeSliderTest._form, 0, 10, 3, 5)
+		slider = QtRangeSlider(QtRangeSliderTest._form, 0, 10*1024**3, 3*1024**3, 5*1024**3)
 		unused_event = QPaintEvent(QRect(0, 0, 1, 1))
 		slider.setMouseTracking(True)
 		slider.resizeEvent(unused_event)
@@ -60,14 +67,18 @@ class QtRangeSliderTest(unittest.TestCase):
 		# pylint: disable=protected-access
 		left_thumb_position = slider._left_thumb.rect
 
-		QTest.mouseMove(slider, pos=left_thumb_position.center())
+		_mouse_move(slider, left_thumb_position.center())
 		QTest.mousePress(slider, Qt.LeftButton, pos=left_thumb_position.center())
 
 		new_position = left_thumb_position.center()
 		new_position.setX(new_position.x() - 10)
-		event = QMouseEvent(QEvent.MouseMove, new_position, \
-			Qt.LeftButton, Qt.NoButton, Qt.NoModifier)
-		QApplication.sendEvent(slider, event)
-
+		_mouse_move(slider, new_position)
+		
 		QTest.mouseRelease(slider, Qt.LeftButton)
-		self.assertEqual(slider.get_left_thumb_value(), 2)
+		self.assertEqual(slider.get_left_thumb_value(), 2684354560)
+
+		#new_width = QtRangeSliderTest._initial_size.width() - 50
+		#QTest.mouseMove(slider, pos=left_thumb_position.center())
+		#QTest.mousePress(slider, Qt.LeftButton, pos=left_thumb_position.center())
+		#slider.setMaximumSize(QSize(new_width, QtRangeSliderTest._initial_size.height()))
+		#slider.paintEvent(unused_event)
