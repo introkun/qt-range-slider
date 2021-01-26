@@ -10,6 +10,7 @@ from qt_range_slider import QtRangeSlider
 
 
 def _mouse_move(widget: QWidget, new_position: QPoint):
+	print(f"move mouse to ({new_position.x()}, {new_position.y()})")
 	event = QMouseEvent(QEvent.MouseMove, new_position, \
 			Qt.LeftButton, Qt.NoButton, Qt.NoModifier)
 	QApplication.sendEvent(widget, event)
@@ -73,12 +74,20 @@ class QtRangeSliderTest(unittest.TestCase):
 		new_position = left_thumb_position.center()
 		new_position.setX(new_position.x() - 10)
 		_mouse_move(slider, new_position)
-		
+
 		QTest.mouseRelease(slider, Qt.LeftButton)
 		self.assertEqual(slider.get_left_thumb_value(), 2684354560)
 
-		#new_width = QtRangeSliderTest._initial_size.width() - 50
-		#QTest.mouseMove(slider, pos=left_thumb_position.center())
-		#QTest.mousePress(slider, Qt.LeftButton, pos=left_thumb_position.center())
-		#slider.setMaximumSize(QSize(new_width, QtRangeSliderTest._initial_size.height()))
-		#slider.paintEvent(unused_event)
+		new_width = QtRangeSliderTest._initial_size.width() - 50
+		QTest.mouseMove(slider, pos=left_thumb_position.center())
+		QTest.mousePress(slider, Qt.LeftButton, pos=left_thumb_position.center())
+		slider.setMaximumSize(QSize(new_width, QtRangeSliderTest._initial_size.height()))
+		slider.paintEvent(unused_event)
+		new_position = left_thumb_position.center()
+		new_x = new_position.x() - 30
+		new_position.setX(new_x)
+		_mouse_move(slider, new_position)
+
+		QTest.mouseRelease(slider, Qt.LeftButton)
+		self.assertEqual(slider.get_left_thumb_value(), 894784853)
+
