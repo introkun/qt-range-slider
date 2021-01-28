@@ -69,27 +69,88 @@ class QtRangeSliderTest(unittest.TestCase):
 		slider.setMouseTracking(True)
 		_draw_widget(slider)
 		# pylint: disable=protected-access
-		left_thumb_position = slider._left_thumb.rect
+		left_thumb_position = slider._left_thumb.rect.center()
 
-		_mouse_move(slider, left_thumb_position.center())
-		QTest.mousePress(slider, Qt.LeftButton, pos=left_thumb_position.center())
+		_mouse_move(slider, left_thumb_position)
+		QTest.mousePress(slider, Qt.LeftButton, pos=left_thumb_position)
 
-		new_position = left_thumb_position.center()
+		new_position = left_thumb_position
 		new_position.setX(new_position.x() - 10)
 		_mouse_move(slider, new_position)
 
 		QTest.mouseRelease(slider, Qt.LeftButton)
 		self.assertEqual(slider.get_left_thumb_value(), 2684354560)
 
+		left_thumb_position = slider._left_thumb.rect.center()
 		new_width = QtRangeSliderTest._initial_size.width() - 50
-		QTest.mouseMove(slider, pos=left_thumb_position.center())
-		QTest.mousePress(slider, Qt.LeftButton, pos=left_thumb_position.center())
+		QTest.mouseMove(slider, pos=left_thumb_position)
+		QTest.mousePress(slider, Qt.LeftButton, pos=left_thumb_position)
 		slider.setMaximumSize(QSize(new_width, QtRangeSliderTest._initial_size.height()))
 		_draw_widget(slider)
-		new_position = left_thumb_position.center()
+		new_position = left_thumb_position
 		new_x = new_position.x() - 30
 		new_position.setX(new_x)
 		_mouse_move(slider, new_position)
 
 		QTest.mouseRelease(slider, Qt.LeftButton)
 		self.assertEqual(slider.get_left_thumb_value(), 894784853)
+
+	def test_dragging_right_thumb(self):
+		slider = QtRangeSlider(QtRangeSliderTest._form, 0, _gb_to_bytes(10), \
+			_gb_to_bytes(3), _gb_to_bytes(5))
+		slider.setMouseTracking(True)
+		_draw_widget(slider)
+		# pylint: disable=protected-access
+		right_thumb_center = slider._right_thumb.rect.center()
+
+		_mouse_move(slider, right_thumb_center)
+		QTest.mousePress(slider, Qt.RightButton, pos=right_thumb_center)
+
+		right_thumb_center.setX(right_thumb_center.x() - 10)
+		_mouse_move(slider, right_thumb_center)
+
+		QTest.mouseRelease(slider, Qt.RightButton)
+		self.assertEqual(slider.get_right_thumb_value(), 4384445781)
+
+	def test_invalid_ticks_count(self):
+		slider = QtRangeSlider(QtRangeSliderTest._form, 0, 10)
+		with self.assertRaises(ValueError):
+			slider.set_ticks_count(-10)
+
+	def test_set_incorrect_right_thumb_value(self):
+		max_value = 10
+		slider = QtRangeSlider(QtRangeSliderTest._form, 0, max_value)
+		slider.set_right_thumb_value(max_value + 2)
+		self.assertEqual(slider.get_right_thumb_value(), max_value)
+
+	def test_set_incorrect_left_thumb_value(self):
+		min_value = 0
+		slider = QtRangeSlider(QtRangeSliderTest._form, min_value, 10)
+		slider.set_left_thumb_value(min_value - 2)
+		self.assertEqual(slider.get_left_thumb_value(), min_value)
+
+	def test_set_left_thumb_value_greater_than_right(self):
+		left_thumb_value = 3
+		right_thumb_value = 5
+		slider = QtRangeSlider(QtRangeSliderTest._form, 0, 10, left_thumb_value, right_thumb_value)
+		slider.set_left_thumb_value(right_thumb_value + 2)
+		self.assertEqual(slider.get_left_thumb_value(), left_thumb_value)
+
+	def test_set_right_thumb_value_less_than_left(self):
+		left_thumb_value = 3
+		right_thumb_value = 5
+		slider = QtRangeSlider(QtRangeSliderTest._form, 0, 10, left_thumb_value, right_thumb_value)
+		slider.set_right_thumb_value(left_thumb_value - 2)
+		self.assertEqual(slider.get_right_thumb_value(), right_thumb_value)
+
+	def test_set_same_left_thumb_value(self):
+		left_thumb_value = 3
+		slider = QtRangeSlider(QtRangeSliderTest._form, 0, 10, left_thumb_value, 5)
+		slider.set_left_thumb_value(left_thumb_value)
+		self.assertEqual(slider.get_left_thumb_value(), left_thumb_value)
+
+	def test_set_same_right_thumb_value(self):
+		right_thumb_value = 5
+		slider = QtRangeSlider(QtRangeSliderTest._form, 0, 10, 3, right_thumb_value)
+		slider.set_right_thumb_value(right_thumb_value)
+		self.assertEqual(slider.get_right_thumb_value(), right_thumb_value)
