@@ -7,6 +7,14 @@ from PyQt5.QtWidgets import (QWidget, QSizePolicy)
 from PyQt5.QtGui import QPainter, QBrush, QColor, QPalette
 
 
+def _left_thumb_adjuster(value, min_value):
+	if value < min_value:
+		value = min_value
+
+def _right_thumb_adjuster(value, max_value):
+	if value > max_value:
+		value = max_value
+
 @dataclass
 class Thumb:
 	"""Thumb class which holds information about a thumb.
@@ -197,20 +205,24 @@ class QtRangeSlider(QWidget):
 	# override Qt event
 	def mouseMoveEvent(self, event):
 		print("mouseMoveEvent")
-		if self._left_thumb.pressed:
-			new_val = self.__get_thumb_value(event.x(), self._canvas_width, self._right_value)
-			print(f"new_val {new_val}")
-			if new_val < 0:
-				print("negative new_val !!!!")
-				return
-			self.set_left_thumb_value(new_val)
-			return
 
-		if self._right_thumb.pressed:
+		thumb = self._left_thumb if self._left_thumb.pressed else self._right_thumb
+
+		if thumb.pressed:
+			if thumb == self._left_thumb:
+				value_setter = self.set_left_thumb_value
+				value_adjuster = lambda val: _left_thumb_adjuster(val, 0)
+			else:
+				value_setter = self.set_right_thumb_value
+				value_adjuster = lambda val: _right_thumb_adjuster(val, self._right_value)
+
 			new_val = self.__get_thumb_value(event.x(), self._canvas_width, self._right_value)
-			if new_val > self._right_value:
-				return
-			self.set_right_thumb_value(new_val)
+			value_adjuster(new_val)
+			value_changed = new_val != thumb.value
+			if value_changed:
+				value_setter(new_val)
+
+		super().mouseMoveEvent(event)
 
 	def get_left_thumb_value(self):
 		return self._left_thumb.value
