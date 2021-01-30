@@ -58,7 +58,7 @@ class QtRangeSlider(QWidget):
 		super().__init__(parent)
 
 		self.setSizePolicy(
-			QSizePolicy.Fixed,
+			QSizePolicy.Expanding,
 			QSizePolicy.Fixed
 		)
 		self.setMinimumWidth(self.WIDTH)
