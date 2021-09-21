@@ -13,7 +13,7 @@ with open(os.path.join(HERE, "README.md")) as fid:
 # This call to setup() does all the work
 setuptools.setup(
 	name="qt-range-slider",
-	version="0.2.5",
+	version="0.2.6",
 	description="Qt widget-slider with two thumbs (min/max values)",
 	long_description=README,
 	long_description_content_type="text/markdown",
@@ -21,7 +21,6 @@ setuptools.setup(
 	author="Sergey G",
 	author_email="introkun@gmail.com",
 	license="MIT",
-	license_files = ('LICENSE'),
 	classifiers=[
 		"License :: OSI Approved :: MIT License",
 		'Operating System :: OS Independent',
