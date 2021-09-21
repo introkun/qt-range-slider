@@ -21,6 +21,7 @@ setuptools.setup(
 	author="Sergey G",
 	author_email="introkun@gmail.com",
 	license="MIT",
+	license_files = ('LICENSE'),
 	classifiers=[
 		"License :: OSI Approved :: MIT License",
 		'Operating System :: OS Independent',

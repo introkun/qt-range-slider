@@ -26,7 +26,6 @@ jobs:
     - name: Build a binary wheel and a source tarball
       run: |
         python -m build --sdist --wheel --outdir dist/ .
-        cp LICENSE dist/
     - name: Publish distribution 📦 to Test PyPI
       continue-on-error: true
       uses: pypa/gh-action-pypi-publish@master
