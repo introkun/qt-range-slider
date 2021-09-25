@@ -10,12 +10,10 @@ from PyQt5.QtGui import QPainter, QBrush, QColor, QPalette
 
 
 def _left_thumb_adjuster(value, min_value):
-	if value < min_value:
-		value = min_value
+	value = max(value, min_value)
 
 def _right_thumb_adjuster(value, max_value):
-	if value > max_value:
-		value = max_value
+	value = min(value, max_value)
 
 @dataclass
 class Thumb:
