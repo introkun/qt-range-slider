@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import logging
+
 from dataclasses import dataclass
 
 from PyQt5.QtCore import Qt, QRect, QSize, pyqtSignal
@@ -86,7 +88,7 @@ class QtRangeSlider(QWidget):
 		self._border_color = parent_palette.color(QPalette.Mid)
 
 	def paintEvent(self, unused_e):
-		print("paintEvent")
+		logging.debug("paintEvent")
 		del unused_e
 		painter = QPainter(self)
 		painter.setRenderHint(QPainter.Antialiasing)
@@ -166,7 +168,8 @@ class QtRangeSlider(QWidget):
 			# nothing to update
 			return
 		self._left_thumb.value = value
-		print(f"value before emit {value}")
+		# pylint: disable=logging-fstring-interpolation
+		logging.debug(f"value before emit {value}")
 		self.left_thumb_value_changed.emit(value)
 		self.repaint()
 
@@ -177,13 +180,14 @@ class QtRangeSlider(QWidget):
 			# nothing to update
 			return
 		self._right_thumb.value = value
-		print(f"value before emit {value}")
+		# pylint: disable=logging-fstring-interpolation
+		logging.debug(f"value before emit {value}")
 		self.right_thumb_value_changed.emit(value)
 		self.repaint()
 
 	# override Qt event
 	def mousePressEvent(self, event):
-		print("mousePressEvent")
+		logging.debug("mousePressEvent")
 		if self._left_thumb.rect.contains(event.x(), event.y()):
 			self._left_thumb.pressed = True
 		if self._right_thumb.rect.contains(event.x(), event.y()):
@@ -192,19 +196,20 @@ class QtRangeSlider(QWidget):
 
 	# override Qt event
 	def mouseReleaseEvent(self, event):
-		print("mouseReleaseEvent")
+		logging.debug("mouseReleaseEvent")
 		self._left_thumb.pressed = False
 		self._right_thumb.pressed = False
 		super().mouseReleaseEvent(event)
 
 	# pylint: disable=no-self-use
 	def __get_thumb_value(self, x, canvas_width, right_value):
-		print(f"x {x} canvas_width {canvas_width} left_value {self._left_thumb.value} right_value {right_value}")
+		# pylint: disable=logging-fstring-interpolation
+		logging.debug(f"x {x} canvas_width {canvas_width} left_value {self._left_thumb.value} right_value {right_value}")
 		return round(x / canvas_width * right_value)
 
 	# override Qt event
 	def mouseMoveEvent(self, event):
-		print("mouseMoveEvent")
+		logging.debug("mouseMoveEvent")
 
 		thumb = self._left_thumb if self._left_thumb.pressed else self._right_thumb
 
@@ -250,7 +255,7 @@ class QtRangeSlider(QWidget):
 			painter.drawLine(x, y1, x, y2)
 
 	def resizeEvent(self, event):
-		print("resizeEvent")
+		logging.debug("resizeEvent")
 		del event
 		self._canvas_width = self.width()
 		self._canvas_height = self.height()
