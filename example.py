@@ -1,4 +1,5 @@
 import sys
+import logging
 
 from hfilesize import FileSize
 
@@ -54,6 +55,8 @@ def _render_slider_with_labels(layout, min_value = 0, max_value = 10, \
 
 def main():
 	app = QApplication(sys.argv)
+
+	logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
 	main_window = QWidget()
 	main_window.setMinimumSize(640, 480)
