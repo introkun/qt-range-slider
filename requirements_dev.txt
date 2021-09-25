@@ -6,3 +6,4 @@ coveralls~=2.2.0
 rope~=0.20.1
 Sphinx~=3.4.3
 hfilesize~=0.1.0
+humanize~=3.11

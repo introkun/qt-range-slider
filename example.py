@@ -2,6 +2,7 @@ import sys
 import logging
 
 from hfilesize import FileSize
+import humanize
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout, QVBoxLayout, QLabel
@@ -13,7 +14,7 @@ def _size(size):
 	if size < 0:
 		print('size is negative, resetting to 0')
 		size = 0
-	return '{:.02fH}'.format(FileSize(size))
+	return humanize.naturalsize(FileSize(size))
 
 # pylint: disable=too-many-arguments
 def _render_only_slider(layout, min_value = 0, max_value = 10):
