@@ -3,6 +3,6 @@ pylint~=2.11.1
 invoke~=1.4.0
 coverage~=5.3
 coveralls~=2.2.0
-rope~=0.18.0
+rope~=0.20.1
 Sphinx~=3.4.3
 hfilesize~=0.1.0
