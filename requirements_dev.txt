@@ -4,6 +4,6 @@ invoke~=1.6.0
 coverage~=5.5
 coveralls~=3.2.0
 rope~=0.20.1
-Sphinx~=4.2.0
+Sphinx~=6.1.2
 hfilesize~=0.1.0
 humanize~=3.11
