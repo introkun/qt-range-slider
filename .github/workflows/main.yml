@@ -28,7 +28,7 @@ jobs:
       with:
         version: '6.5.1'
         setup-python: 'false'
-        mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
+        # mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
     - name: Install python dependencies
       run: |
         pip3 install --upgrade pip
