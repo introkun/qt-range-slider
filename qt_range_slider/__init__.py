@@ -4,9 +4,9 @@ import logging
 
 from dataclasses import dataclass
 
-from PyQt5.QtCore import Qt, QRect, QSize, pyqtSignal
-from PyQt5.QtWidgets import (QWidget, QSizePolicy)
-from PyQt5.QtGui import QPainter, QBrush, QColor, QPalette
+from PyQt6.QtCore import Qt, QRect, QSize, pyqtSignal
+from PyQt6.QtWidgets import (QWidget, QSizePolicy)
+from PyQt6.QtGui import QPainter, QBrush, QColor, QPalette
 
 
 def _left_thumb_adjuster(value, min_value):
@@ -58,8 +58,8 @@ class QtRangeSlider(QWidget):
 		super().__init__(parent)
 
 		self.setSizePolicy(
-			QSizePolicy.Expanding,
-			QSizePolicy.Fixed
+			QSizePolicy.Policy.Expanding,
+			QSizePolicy.Policy.Fixed
 		)
 		self.setMinimumWidth(self.WIDTH)
 		self.setMinimumHeight(self.HEIGHT)
@@ -80,16 +80,16 @@ class QtRangeSlider(QWidget):
 		self._ticks_count = 0
 
 		parent_palette = parent.palette()
-		self._background_color = parent_palette.color(QPalette.Window)
-		self._base_color = parent_palette.color(QPalette.Base)
-		self._button_color = parent_palette.color(QPalette.Button)
-		self._border_color = parent_palette.color(QPalette.Mid)
+		self._background_color = parent_palette.color(QPalette.ColorRole.Window)
+		self._base_color = parent_palette.color(QPalette.ColorRole.Base)
+		self._button_color = parent_palette.color(QPalette.ColorRole.Button)
+		self._border_color = parent_palette.color(QPalette.ColorRole.Mid)
 
 	def paintEvent(self, unused_e):
 		logging.debug("paintEvent")
 		del unused_e
 		painter = QPainter(self)
-		painter.setRenderHint(QPainter.Antialiasing)
+		painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
 		self.__draw_track(self._canvas_width, self._canvas_height, painter)
 		self.__draw_track_fill(self._canvas_width, self._canvas_height, painter)
@@ -106,7 +106,7 @@ class QtRangeSlider(QWidget):
 		del canvas_height
 		brush = QBrush()
 		brush.setColor(self.TRACK_COLOR)
-		brush.setStyle(Qt.SolidPattern)
+		brush.setStyle(Qt.BrushStyle.SolidPattern)
 
 		rect = QRect(self.TRACK_PADDING, self.__get_track_y_position(), \
 			canvas_width - 2 * self.TRACK_PADDING, self.TRACK_HEIGHT)
@@ -116,7 +116,7 @@ class QtRangeSlider(QWidget):
 		del canvas_height
 		brush = QBrush()
 		brush.setColor(self.TRACK_FILL_COLOR)
-		brush.setStyle(Qt.SolidPattern)
+		brush.setStyle(Qt.BrushStyle.SolidPattern)
 
 		available_width = canvas_width - 2 * self.TRACK_PADDING
 		x1 = self._left_thumb.value / self._right_value * available_width + self.TRACK_PADDING
@@ -134,7 +134,7 @@ class QtRangeSlider(QWidget):
 	def __draw_thumb(self, x, y, painter):
 		brush = QBrush()
 		brush.setColor(self._base_color)
-		brush.setStyle(Qt.SolidPattern)
+		brush.setStyle(Qt.BrushStyle.SolidPattern)
 
 		self.__set_painter_pen_color(painter, self._border_color)
 
@@ -186,9 +186,10 @@ class QtRangeSlider(QWidget):
 	# override Qt event
 	def mousePressEvent(self, event):
 		logging.debug("mousePressEvent")
-		if self._left_thumb.rect.contains(event.x(), event.y()):
+		position = event.position()
+		if self._left_thumb.rect.contains(position.x(), position.y()):
 			self._left_thumb.pressed = True
-		if self._right_thumb.rect.contains(event.x(), event.y()):
+		if self._right_thumb.rect.contains(position.x(), position.y()):
 			self._right_thumb.pressed = True
 		super().mousePressEvent(event)
 
@@ -219,7 +220,7 @@ class QtRangeSlider(QWidget):
 				value_setter = self.set_right_thumb_value
 				value_adjuster = lambda val: _right_thumb_adjuster(val, self._right_value)
 
-			new_val = self.__get_thumb_value(event.x(), self._canvas_width, self._right_value)
+			new_val = self.__get_thumb_value(event.position().x(), self._canvas_width, self._right_value)
 			value_adjuster(new_val)
 			value_changed = new_val != thumb.value
 			if value_changed:
