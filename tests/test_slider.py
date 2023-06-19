@@ -1,18 +1,18 @@
 import sys
 import unittest
 
-from PyQt5.QtCore import Qt, QRect, QEvent, QSize, QPoint
-from PyQt5.QtTest import QTest
-from PyQt5.QtGui import QPaintEvent, QMouseEvent
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
+from PyQt6.QtCore import Qt, QRect, QEvent, QSize, QPoint
+from PyQt6.QtTest import QTest
+from PyQt6.QtGui import QPaintEvent, QMouseEvent
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget
 
 from qt_range_slider import QtRangeSlider
 
 
 def _mouse_move(widget: QWidget, new_position: QPoint):
 	print(f"move mouse to ({new_position.x()}, {new_position.y()})")
-	event = QMouseEvent(QEvent.MouseMove, new_position, \
-			Qt.LeftButton, Qt.NoButton, Qt.NoModifier)
+	event = QMouseEvent(QEvent.Type.MouseMove, new_position, \
+			Qt.MouseButton.LeftButton, Qt.MouseButton.NoButton, Qt.KeyboardModifier.NoModifier)
 	QApplication.sendEvent(widget, event)
 
 def _draw_widget(widget: QWidget):
