@@ -1,7 +1,7 @@
 import sys
 import unittest
 
-from PyQt6.QtCore import Qt, QRect, QEvent, QSize, QPoint
+from PyQt6.QtCore import Qt, QRect, QEvent, QSize, QPoint, QPointF
 from PyQt6.QtTest import QTest
 from PyQt6.QtGui import QPaintEvent, QMouseEvent
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget
@@ -11,7 +11,7 @@ from qt_range_slider import QtRangeSlider
 
 def _mouse_move(widget: QWidget, new_position: QPoint):
 	print(f"move mouse to ({new_position.x()}, {new_position.y()})")
-	event = QMouseEvent(QEvent.Type.MouseMove, new_position, \
+	event = QMouseEvent(QEvent.Type.MouseMove, QPointF(new_position), \
 			Qt.MouseButton.LeftButton, Qt.MouseButton.NoButton, Qt.KeyboardModifier.NoModifier)
 	QApplication.sendEvent(widget, event)
 
@@ -72,19 +72,19 @@ class QtRangeSliderTest(unittest.TestCase):
 		left_thumb_position = slider._left_thumb.rect.center()
 
 		_mouse_move(slider, left_thumb_position)
-		QTest.mousePress(slider, Qt.LeftButton, pos=left_thumb_position)
+		QTest.mousePress(slider, Qt.MouseButton.LeftButton, pos=left_thumb_position)
 
 		new_position = left_thumb_position
 		new_position.setX(new_position.x() - 10)
 		_mouse_move(slider, new_position)
 
-		QTest.mouseRelease(slider, Qt.LeftButton)
+		QTest.mouseRelease(slider, Qt.MouseButton.LeftButton)
 		self.assertEqual(slider.get_left_thumb_value(), 2684354560)
 
 		left_thumb_position = slider._left_thumb.rect.center()
 		new_width = QtRangeSliderTest._initial_size.width() - 50
 		QTest.mouseMove(slider, pos=left_thumb_position)
-		QTest.mousePress(slider, Qt.LeftButton, pos=left_thumb_position)
+		QTest.mousePress(slider, Qt.MouseButton.LeftButton, pos=left_thumb_position)
 		slider.setMaximumSize(QSize(new_width, QtRangeSliderTest._initial_size.height()))
 		_draw_widget(slider)
 		new_position = left_thumb_position
@@ -92,7 +92,7 @@ class QtRangeSliderTest(unittest.TestCase):
 		new_position.setX(new_x)
 		_mouse_move(slider, new_position)
 
-		QTest.mouseRelease(slider, Qt.LeftButton)
+		QTest.mouseRelease(slider, Qt.MouseButton.LeftButton)
 		self.assertEqual(slider.get_left_thumb_value(), 894784853)
 
 	def test_dragging_right_thumb(self):
@@ -104,12 +104,12 @@ class QtRangeSliderTest(unittest.TestCase):
 		right_thumb_center = slider._right_thumb.rect.center()
 
 		_mouse_move(slider, right_thumb_center)
-		QTest.mousePress(slider, Qt.RightButton, pos=right_thumb_center)
+		QTest.mousePress(slider, Qt.MouseButton.RightButton, pos=right_thumb_center)
 
 		right_thumb_center.setX(right_thumb_center.x() - 10)
 		_mouse_move(slider, right_thumb_center)
 
-		QTest.mouseRelease(slider, Qt.RightButton)
+		QTest.mouseRelease(slider, Qt.MouseButton.RightButton)
 		self.assertEqual(slider.get_right_thumb_value(), 4384445781)
 
 	def test_invalid_ticks_count(self):

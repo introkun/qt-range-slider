@@ -187,9 +187,9 @@ class QtRangeSlider(QWidget):
 	def mousePressEvent(self, event):
 		logging.debug("mousePressEvent")
 		position = event.position()
-		if self._left_thumb.rect.contains(position.x(), position.y()):
+		if self._left_thumb.rect.contains(int(position.x()), int(position.y())):
 			self._left_thumb.pressed = True
-		if self._right_thumb.rect.contains(position.x(), position.y()):
+		if self._right_thumb.rect.contains(int(position.x()), int(position.y())):
 			self._right_thumb.pressed = True
 		super().mousePressEvent(event)
 
