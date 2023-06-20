@@ -29,13 +29,8 @@ jobs:
         version: '6.2.0'
         setup-python: 'false'
         # mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
-    - name: Install PyQt6
-      run: |
-        pip install PyQt6
     - name: Install python dependencies
       run: |
-        which qmake
-        qmake -v
         pip3 install --upgrade pip
         pip3 install -r requirements.txt
         pip3 install -r requirements_dev.txt
