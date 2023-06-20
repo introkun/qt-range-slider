@@ -34,16 +34,20 @@ jobs:
         pip3 install --upgrade pip
         pip3 install -r requirements.txt
         pip3 install -r requirements_dev.txt
-    - name: Install xvfb on macOS
+    - name: Install xvfbwrapper on macOS
       if: runner.os == 'macOS'
       run: |
-        brew install xvfb
+        pip install xvfbwrapper
     - name: Tests and coverage
       env:
         QT_QPA_PLATFORM: offscreen
       run: |
         if [[ "$RUNNER_OS" == "Mac OS X" ]]; then
-          xvfb-run -s "-screen 0 1024x768x24" invoke coverage
+          python -c "import xvfbwrapper
+            with xvfbwrapper.Xvfb() as xvfb:
+              xvfb.start()
+              import invoke
+              invoke.main(['coverage'])"
         else
           invoke coverage
         fi
