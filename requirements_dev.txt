@@ -1,5 +1,5 @@
 pytest~=6.2.5
-pylint~=2.11.1
+pylint~=2.17.4
 invoke~=1.6.0
 coverage~=5.5
 coveralls~=3.3.1
