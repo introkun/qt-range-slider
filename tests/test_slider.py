@@ -48,7 +48,6 @@ class QtRangeSliderTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             QtRangeSlider(QtRangeSliderTest._form, 0, 10, 5, 3)
 
-    # pylint: disable=no-self-use
     def test_paint_event(self):
         slider = QtRangeSlider(QtRangeSliderTest._form, 0, 10, 3, 5)
         _draw_widget(slider)

@@ -229,7 +229,6 @@ class QtRangeSlider(QWidget):
         self._right_thumb.pressed = False
         super().mouseReleaseEvent(event)
 
-    # pylint: disable=no-self-use
     def __get_thumb_value(self, x, canvas_width, right_value):
         # pylint: disable=logging-fstring-interpolation
         logging.debug(
@@ -246,12 +245,15 @@ class QtRangeSlider(QWidget):
         if thumb.pressed:
             if thumb == self._left_thumb:
                 value_setter = self.set_left_thumb_value
-                value_adjuster = lambda val: _left_thumb_adjuster(val, 0)
+
+                def value_adjuster(val):
+                    return _left_thumb_adjuster(val, 0)
+
             else:
                 value_setter = self.set_right_thumb_value
-                value_adjuster = lambda val: _right_thumb_adjuster(
-                    val, self._right_value
-                )
+
+                def value_adjuster(val):
+                    return _right_thumb_adjuster(val, self._right_value)
 
             new_val = self.__get_thumb_value(
                 event.position().x(), self._canvas_width, self._right_value
