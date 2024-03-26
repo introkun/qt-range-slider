@@ -8,31 +8,28 @@ HERE = os.path.abspath(os.path.dirname(__file__))
 
 # The text of the README file
 with open(os.path.join(HERE, "README.md")) as fid:
-	README = fid.read()
+    README = fid.read()
 
 # This call to setup() does all the work
 setuptools.setup(
-	name="qt-range-slider",
-	version="0.3.1",
-	description="Qt widget-slider with two thumbs (min/max values)",
-	long_description=README,
-	long_description_content_type="text/markdown",
-	url="https://github.com/introkun/qt-range-slider",
-	author="Sergey G",
-	author_email="introkun@gmail.com",
-	license="MIT",
-	classifiers=[
-		"License :: OSI Approved :: MIT License",
-		'Operating System :: OS Independent',
-		"Programming Language :: Python",
-		"Programming Language :: Python :: 3",
-		"Development Status :: 3 - Alpha"
-	],
-	packages=setuptools.find_packages(),
-	include_package_data=True,
-	install_requires=[
-		"PyQt6_Qt6",
-		"PyQt6-sip"
-	],
-	python_requires='>=3.6',
+    name="qt-range-slider",
+    version="0.4.1",
+    description="Qt widget-slider with two thumbs (min/max values)",
+    long_description=README,
+    long_description_content_type="text/markdown",
+    url="https://github.com/introkun/qt-range-slider",
+    author="Sergey G",
+    author_email="introkun@gmail.com",
+    license="MIT",
+    classifiers=[
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Development Status :: 3 - Alpha",
+    ],
+    packages=setuptools.find_packages(),
+    include_package_data=True,
+    install_requires=["PyQt6_Qt6", "PyQt6-sip"],
+    python_requires=">=3.9",
 )
