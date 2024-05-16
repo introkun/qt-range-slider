@@ -2,7 +2,7 @@ pytest
 pylint
 invoke
 coverage
-coveralls~=3.3.1
+coveralls~=4.0.1
 rope~=1.7.0
 Sphinx~=7.2.6
 hfilesize~=0.1.0
